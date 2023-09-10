@@ -5,7 +5,7 @@ public class App {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        char val;
+        String val;
 
         int[] priser = new int[24];
 
@@ -17,16 +17,16 @@ public class App {
             System.out.print("3. Sortera\n");
             System.out.print("4. Bästa Laddningstid (4h)\n");
             System.out.print("e. Avsluta\n");
-            val = scanner.next().charAt(0);
+            val = scanner.nextLine();
 
-            switch (Character.toLowerCase(val)) {
-                case '1':
+            switch (val.toLowerCase()) {
+                case "1" -> {
                     for (int timme = 0; timme < priser.length; timme++) {
-                        System.out.print("Skriv in priset för "+(timme+1)+":a timmen i hela ören. \n");
+                        System.out.print("Skriv in priset för " + (timme + 1) + ":a timmen i hela ören. \n");
                         priser[timme] = scanner.nextInt();
                     }
-                    break;
-                case '2':
+                }
+                case "2" -> {
                     int min = priser[0];
                     int max = priser[0];
                     int summa = priser[0];
@@ -46,20 +46,15 @@ public class App {
                         summa += aktuelltPris;
                     }
                     int medel = summa / priser.length;
-
-                    System.out.print("Lägsta pris: " + formatTimme(timmeMin) + ", "+min+" öre per kW/h. \n");
-                    System.out.print("Högsta pris: " + formatTimme(timmeMax) + ", "+max+" öre per kW/h. \n");
-                    System.out.print("Genomsnittligt pris: "+medel+" öre per kW/h. \n");
-                    break;
-
-                case 'e':
-                    System.out.print("Programmet avslutas.");
-                    break;
-                default:
-                    System.out.print("Ej giltigt, försök igen.\n");
+                    System.out.print("Lägsta pris: " + formatTimme(timmeMin) + ", " + min + " öre per kW/h. \n");
+                    System.out.print("Högsta pris: " + formatTimme(timmeMax) + ", " + max + " öre per kW/h. \n");
+                    System.out.print("Genomsnittligt pris: " + medel + " öre per kW/h. \n");
+                }
+                case "e" -> System.out.print("Programmet avslutas.");
+                default -> System.out.print("Ej giltigt, försök igen.\n");
             }
 
-        } while (Character.toLowerCase(val) != 'e');
+        } while (!val.equalsIgnoreCase("e"));
     }
     public static String formatTimme(int timme) {
         return String.format("%02d-%02d", timme, (timme + 1) % 24);
