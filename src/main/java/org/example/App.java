@@ -1,10 +1,13 @@
 package org.example;
+import java.util.Arrays;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class App {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        Locale swedishLocale = new Locale("sv", "SE"); Locale.setDefault(swedishLocale);
         String val;
 
         int[] priser = new int[24];
@@ -22,17 +25,23 @@ public class App {
             switch (val.toLowerCase()) {
                 case "1" -> {
                     for (int timme = 0; timme < priser.length; timme++) {
-                        System.out.print("Skriv in priset för " + (timme + 1) + ":a timmen i hela ören. \n");
-                        priser[timme] = scanner.nextInt();
+                        System.out.print("Skriv in priset för " + (timme + 1) + ":a timmen i hela ören.\n");
+                        try {
+                            priser[timme] = Integer.parseInt(scanner.nextLine());
+                        } catch (NumberFormatException e) {
+                            System.out.print("Felaktig inmatning, ange ett heltal.\n");
+                            timme--;
+                        }
                     }
+                    break;
                 }
                 case "2" -> {
-                    int min = priser[0];
-                    int max = priser[0];
-                    int summa = priser[0];
+                    int min = Integer.MAX_VALUE;
+                    int max = Integer.MIN_VALUE;
+                    int summa = 0;
                     int timmeMin = 0;
                     int timmeMax = 0;
-                    for (int timme = 1; timme < priser.length; timme++) {
+                    for (int timme = 0; timme < priser.length; timme++) {
                         int aktuelltPris = priser[timme];
 
                         if (aktuelltPris < min) {
@@ -45,10 +54,41 @@ public class App {
                         }
                         summa += aktuelltPris;
                     }
-                    int medel = summa / priser.length;
-                    System.out.print("Lägsta pris: " + formatTimme(timmeMin) + ", " + min + " öre per kW/h. \n");
-                    System.out.print("Högsta pris: " + formatTimme(timmeMax) + ", " + max + " öre per kW/h. \n");
-                    System.out.print("Genomsnittligt pris: " + medel + " öre per kW/h. \n");
+                    double medel = (double) summa / priser.length;
+                    System.out.print("Lägsta pris: " + formatTimme(timmeMin) + ", " + min + " öre/kWh\n");
+                    System.out.print("Högsta pris: " + formatTimme(timmeMax) + ", " + max + " öre/kWh\n");
+                    System.out.print("Medelpris: " + String.format("%.2f", medel) + " öre/kWh\n");
+                    break;
+                }
+                case "3" -> {
+                    Arrays.sort(priser);
+                    System.out.print("Inmatade elpriser sorterade från dyrast till billigast:\n");
+                    for (int timme = priser.length - 1; timme >= 0; timme--) {
+                        int pris = priser[timme];
+                        String tidspann = formatTimme(timme);
+                        System.out.print(tidspann + " " + pris + " öre \n");
+                    }
+                    break;
+                }
+                case "4" -> {
+                    int billigasteTotalPris = Integer.MAX_VALUE;
+                    int startTimme = 0;
+                    for (int i = 0; i <= priser.length - 4; i++) {
+                        int totalPris = 0;
+                        for (int j = i; j < i + 4; j++) {
+                            totalPris += priser[j];
+                        }
+                        if (totalPris < billigasteTotalPris) {
+                            billigasteTotalPris = totalPris;
+                            startTimme = i;
+                        }
+                    }
+                    int medelprisFör4Timmar = billigasteTotalPris / 4;
+                    String startTid = formatTimme(startTimme);
+                    System.out.print("Påbörja laddning klockan " + startTid + "\n");
+                    System.out.print("Lägsta totalpris för dessa 4h: " + billigasteTotalPris + " öre\n");
+                    System.out.print("Medelpris 4h: " + medelprisFör4Timmar + " öre/kWh\n");
+                    break;
                 }
                 case "e" -> System.out.print("Programmet avslutas.");
                 default -> System.out.print("Ej giltigt, försök igen.\n");
@@ -56,7 +96,12 @@ public class App {
 
         } while (!val.equalsIgnoreCase("e"));
     }
+
     public static String formatTimme(int timme) {
-        return String.format("%02d-%02d", timme, (timme + 1) % 24);
+        if (timme == 23) {
+            return "23-24";
+        } else {
+            return String.format("%02d-%02d", timme, (timme + 1) % 24);
+        }
     }
 }
