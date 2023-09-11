@@ -33,7 +33,6 @@ public class App {
                             timme--;
                         }
                     }
-                    break;
                 }
                 case "2" -> {
                     int min = Integer.MAX_VALUE;
@@ -58,17 +57,15 @@ public class App {
                     System.out.print("Lägsta pris: " + formatTimme(timmeMin) + ", " + min + " öre/kWh\n");
                     System.out.print("Högsta pris: " + formatTimme(timmeMax) + ", " + max + " öre/kWh\n");
                     System.out.print("Medelpris: " + String.format("%.2f", medel) + " öre/kWh\n");
-                    break;
                 }
                 case "3" -> {
                     Arrays.sort(priser);
                     System.out.print("Inmatade elpriser sorterade från dyrast till billigast:\n");
                     for (int timme = priser.length - 1; timme >= 0; timme--) {
                         int pris = priser[timme];
-                        String tidspann = formatTimme(timme);
-                        System.out.print(tidspann + " " + pris + " öre \n");
+                        String tidsspann = formatTimme(timme);
+                        System.out.print(tidsspann + " " + pris + " öre \n");
                     }
-                    break;
                 }
                 case "4" -> {
                     int billigasteTotalPris = Integer.MAX_VALUE;
@@ -88,7 +85,6 @@ public class App {
                     System.out.print("Påbörja laddning klockan " + startTid + "\n");
                     System.out.print("Lägsta totalpris för dessa 4h: " + billigasteTotalPris + " öre\n");
                     System.out.print("Medelpris 4h: " + medelprisFör4Timmar + " öre/kWh\n");
-                    break;
                 }
                 case "e" -> System.out.print("Programmet avslutas.");
                 default -> System.out.print("Ej giltigt, försök igen.\n");
