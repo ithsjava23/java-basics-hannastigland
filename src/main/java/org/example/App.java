@@ -68,7 +68,7 @@ public class App {
                         for (int j = 0; j < priser.length - i - 1; j++) {
                             if (priser[j] < priser[j + 1]) {
                                 int tempPris = priser[j];
-                                priser [j] = priser[j + 1];
+                                priser[j] = priser[j + 1];
                                 priser[j + 1] = tempPris;
                                 int tempTimme = timmar[j];
                                 timmar[j] = timmar[j + 1];
@@ -86,16 +86,16 @@ public class App {
                 case "4" -> {
                     int billigasteTotalPris = Integer.MAX_VALUE;
                     int startTimme = 0;
-                    for (int i = 0; i <= priser.length - 4; i++) {
-                        int totalPris = 0;
-                        for (int j = i; j < i + 4; j++) {
-                            totalPris += priser[j];
+                        for (int i = 0; i <= priser.length - 4; i++) { //eller 3??
+                            int totalPris = 0;
+                            for (int j = i; j < i + 4; j++) {
+                                totalPris += priser[j];
+                            }
+                            if (totalPris < billigasteTotalPris) {
+                                billigasteTotalPris = totalPris;
+                                startTimme = i;
+                            }
                         }
-                        if (totalPris < billigasteTotalPris) {
-                            billigasteTotalPris = totalPris;
-                            startTimme = i;
-                        }
-                    }
                     int medelprisFör4Timmar = billigasteTotalPris / 4;
                     String startTid = formatTimme(timmar[startTimme], false);
                     System.out.print("Påbörja laddning klockan " + startTid + "\n");
@@ -113,6 +113,7 @@ public class App {
             }
 
         } while (!val.equalsIgnoreCase("e"));
+
     }
 
     public static String formatTimme(int timme, boolean medIntervall) {
@@ -126,6 +127,6 @@ public class App {
         } else {
             return String.format("%02d", timme);
         }
-
     }
 }
+
