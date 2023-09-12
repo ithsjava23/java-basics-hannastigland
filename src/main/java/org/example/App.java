@@ -6,7 +6,7 @@ public class App {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Locale swedishLocale = new Locale("sv", "SE");
+        Locale swedishLocale = Locale.of("sv", "SE");
         Locale.setDefault(swedishLocale);
         String val;
 
@@ -107,11 +107,11 @@ public class App {
         for (int i = 0; i < priser.length; i++) {
             int pris = priser[i];
             String tidsspann = formatTimme(timmar[i], true);
-            System.out.println(tidsspann + " " + pris + " öre\n");
+            System.out.print(tidsspann + " " + pris + " öre\n");
         }
     }
     public static void bästaLaddningsTid(int[] priser, int[] timmar) {
-        int billigasteTotalPris = Integer.MAX_VALUE;
+        double billigasteTotalPris = Integer.MAX_VALUE;
         int startTimme = 0;
         for (int i = 0; i <= priser.length - 4; i++) {
             int totalPris = 0;
@@ -123,11 +123,10 @@ public class App {
                 startTimme = i;
             }
         }
-        int medelprisFör4Timmar = billigasteTotalPris / 4;
+        double medelprisFör4Timmar = billigasteTotalPris / 4;
         String startTid = formatTimme(timmar[startTimme], false);
         System.out.print("Påbörja laddning klockan " + startTid + "\n");
-        System.out.print("Lägsta totalpris för dessa 4h: " + billigasteTotalPris + " öre\n");
-        System.out.print("Medelpris 4h: " + medelprisFör4Timmar + " öre/kWh\n");
+        System.out.printf(("Medelpris 4h: " + medelprisFör4Timmar + " öre/kWh\n").replace('.', ','));
     }
 }
 
